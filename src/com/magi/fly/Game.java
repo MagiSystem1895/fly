@@ -65,8 +65,6 @@ public class Game extends JPanel{
 			}
 		};
 		timer.schedule(timerTask, 1000,1000);
-		
-	//play方法的	
 	}
-
+	//play方法到此结束
 }

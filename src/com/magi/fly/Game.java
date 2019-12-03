@@ -2,6 +2,8 @@ package com.magi.fly;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -15,6 +17,11 @@ public class Game extends JPanel{
 	public final int GAME_OVER = 0;
 		
 	public void play() {
+		//1.覆写鼠标适配器的方法
+		//2.添加鼠标监听对象
+		//3.覆写TimerTask
+		//4.创建Timer对象
+		//5.调用Timer的schedule方法
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 			//点击才会开始
 			public void mouseClicked(MouseEvent e) {
@@ -50,6 +57,15 @@ public class Game extends JPanel{
 		};
 		this.addMouseListener(mouseAdapter);
 		this.addMouseMotionListener(mouseAdapter);
+		
+		Timer timer = new Timer();
+		TimerTask timerTask = new TimerTask() {
+			public void run() {
+				System.out.println("正在捕捉动作");
+			}
+		};
+		timer.schedule(timerTask, 1000,1000);
+		
 	//play方法的	
 	}
 

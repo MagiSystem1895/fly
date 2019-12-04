@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,6 +34,7 @@ public class Game extends JPanel{
 	static BufferedImage backgroundImage;
 	static BufferedImage playerImage;
 	static BufferedImage myBulletImage;
+	static BufferedImage antBulletImage;
 
 	static {
 		try {
@@ -40,6 +42,7 @@ public class Game extends JPanel{
 			backgroundImage = ImageIO.read(new File("./imgs/background.png"));
 			playerImage = ImageIO.read(new File("./imgs/player.png"));
 			myBulletImage = ImageIO.read(new File("./imgs/mybullet.png"));
+			antBulletImage = ImageIO.read(new File("./imgs/antbullet.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -48,6 +51,7 @@ public class Game extends JPanel{
 //集合和Player对象
 	List<Object_Fly> ant = new ArrayList<>();//储存小虫子的ArrayList
 	List<MyBullet> myBullets = new ArrayList<>();
+	List<AntBullet> antBullets = new ArrayList<>();
 	Player player = new Player();
 //---------------------------------------------------------------------------------------------	
 //画图
@@ -59,6 +63,9 @@ public class Game extends JPanel{
 		}
 		for(int i=0; i<myBullets.size(); i++) {//打印自己的子弹
 			g.drawImage(myBulletImage,myBullets.get(i).x,myBullets.get(i).y,null);
+		}
+		for(int i=0; i<antBullets.size(); i++) {//打印虫子的子弹
+			g.drawImage(antBulletImage,antBullets.get(i).x,antBullets.get(i).y,null);
 		}
 
 
@@ -111,16 +118,15 @@ public class Game extends JPanel{
 				//2.移动
 				//3.射击
 				//4.子弹打飞行物
-				//5.删除越界飞行物和子弹
+			//5.删除越界飞行物和子弹
 				//6.检查结束
 				enterAction();
-				stepAction();
-				shootAction();
-				repaint();
+					stepAction();
+						shootAction();
+							repaint();
 			}
 		};
 		timer.schedule(timerTask, 10,10);
-
 	}
 	//play方法到此结束
 	private void enterAction() {
@@ -128,11 +134,10 @@ public class Game extends JPanel{
 		//2.创建飞行物对象
 		//3.将对象加入到ArrayList末尾
 		//flying_cnt:飞行物个数
-		//objed_Filese:飞行物集合
+		//objed_Filese:飞行物集合      
 		flying_cnt++;
 		if(flying_cnt % 40 == 0) {
-			Object_Fly fly = new Ant();
-			ant.add(fly);
+			ant.add(new Ant());
 		}
 	}
 	//飞行物添加方法到此结束
@@ -142,17 +147,32 @@ public class Game extends JPanel{
 //			fly.move();
 			ant.get(i).move();
 		}
-		for(int i=0; i<myBullets.size(); i++) {
+		for(int i=0; i<myBullets.size(); i++) {//玩家子弹移动
 			myBullets.get(i).move();
+		}
+		for(int i=0; i<antBullets.size(); i++) {//虫子子弹移动
+			antBullets.get(i).move();
 		}
 	}
 	//飞行物移动方法到此结束
-	private void shootAction() {//玩家射击
+	private void shootAction() {
 		mybullet_cnt++;
 		if(mybullet_cnt % 10 == 0) {
-			myBullets.add(new MyBullet(player.x+10,player.y-20));	
+			myBullets.add(new MyBullet(player.x+10,player.y-20));
+			
 		}
+		//玩家射击到此结束
+		for(int i=0; i<ant.size(); i++) {
+		Random random = new Random();
+		int r = random.nextInt(100);
+		if(mybullet_cnt % 80 == 0 && r<70) {
+			Object_Fly a = ant.get(i);
+			antBullets.add(new AntBullet(a.x+10,a.y+70));			
+			}
+		}
+		//虫子射击到此结束	
 	}
+	//射击方法到此结束
 }
 //Game类到此结束
 

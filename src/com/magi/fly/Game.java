@@ -72,7 +72,7 @@ public class Game extends JPanel{
 	}
 //----------------------------------------------------------------------------------------------------
 //灵魂
-	public void play() {
+	public void play() {									
 		//1.覆写鼠标适配器的方法
 		//2.添加鼠标监听对象
 		//3.覆写TimerTask
@@ -121,9 +121,11 @@ public class Game extends JPanel{
 			//5.删除越界飞行物和子弹
 				//6.检查结束
 				enterAction();
-					stepAction();
-						shootAction();
-							repaint();
+				stepAction();
+				shootAction();
+				bangAction();
+				repaint();
+							
 			}
 		};
 		timer.schedule(timerTask, 10,10);
@@ -154,14 +156,16 @@ public class Game extends JPanel{
 			antBullets.get(i).move();
 		}
 	}
-	//飞行物移动方法到此结束
+//飞行物移动方法到此结束
+	
 	private void shootAction() {
 		mybullet_cnt++;
-		if(mybullet_cnt % 10 == 0) {
+		if(mybullet_cnt % 50 == 0) {
 			myBullets.add(new MyBullet(player.x+10,player.y-20));
 			
 		}
 		//玩家射击到此结束
+		
 		for(int i=0; i<ant.size(); i++) {
 		Random random = new Random();
 		int r = random.nextInt(100);
@@ -172,7 +176,34 @@ public class Game extends JPanel{
 		}
 		//虫子射击到此结束	
 	}
-	//射击方法到此结束
+//射击方法到此结束
+	
+    public void bangAction() {
+    	for(int i=0; i<myBullets.size(); i++) {
+    		MyBullet myBullet = myBullets.get(i);
+    		bang(myBullet);
+    		
+    	}
+    }
+ //遍历子弹方法结束
+
+    public void bang(MyBullet myBullet) {
+    	int flag = -1;
+    	for(int i=0; i<ant.size(); i++) {
+    		if(ant.get(i).shootBy(myBullet)) {
+    			flag = i;
+    			myBullets.remove(myBullets);
+    			break;
+    		}
+    	}
+    	
+    	if(flag != -1) {
+    		ant.remove(flag);
+    	}
+    }
+//bang方法结束    
+    
+
 }
 //Game类到此结束
 

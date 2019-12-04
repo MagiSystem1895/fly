@@ -18,4 +18,5 @@ public class Ant extends Object_Fly{
 	public void move() {
 		x+= moveSpeed;
 	}
+	
 }

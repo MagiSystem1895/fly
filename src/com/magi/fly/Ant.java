@@ -4,16 +4,19 @@ import java.util.Random;
 
 public class Ant extends Object_Fly{
 	
-	Ant(){
-		System.out.println("我是虫子的构造函数");
-		
-		photo = Game.ant;
+	int moveSpeed = 2;
+	
+	Ant(){		
+		photo = Game.antImage;
 		int width = photo.getWidth();
 		int height = photo.getHeight();
-		x = 0;
 		Random r = new Random();
-		int random = r.nextInt(450);
-		System.out.println(random);
-		y = random;
+		x = r.nextInt(50);
+		y = r.nextInt(450);
+		
+	}
+
+	public void move() {
+		x+= moveSpeed;
 	}
 }

@@ -10,4 +10,8 @@ public abstract class Object_Fly {
     public BufferedImage getPhoto() {
         return photo;
     }
+
+	public void move() {
+		
+	}
 }

@@ -27,22 +27,20 @@ public class Game extends JPanel{
 	public final int GAME_OVER = 0;
 	
 //-----------------------------------------------------------------------------------------
-//导入图片
-//BufferedImage为什么要用静态我也不知道，大概是因为他的对象ant在static里吧,静态变量可以通过类名直接调用。
-//其实他的对象ant为什么要在static里我也不知道,是因为要优先于主函数加载？？？
-//关于ImageIO.read()里为什么是new File我也不知道，时间紧迫，先照葫芦画瓢吧。。。
-
-	static BufferedImage antImage;
-	static BufferedImage background;
-//-----------------------------------------------------------------------------------------------
-//集合
+//集合和Player对象
 	List<Object_Fly> ant = new ArrayList<>();//储存小虫子的ArrayList
+	Player player = new Player();
 //---------------------------------------------------------------------------------------------	
-//加载静态资源
+//导入图片
+	static BufferedImage antImage;
+	static BufferedImage backgroundImage;
+	static BufferedImage playerImage;
+
 	static {
 		try {
 			antImage = ImageIO.read(new File("./imgs/ant.png"));
-			background = ImageIO.read(new File("./imgs/background.png"));
+			backgroundImage = ImageIO.read(new File("./imgs/background.png"));
+			playerImage = ImageIO.read(new File("./imgs/player.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -50,9 +48,10 @@ public class Game extends JPanel{
 //------------------------------------------------------------------------------------------------
 //画图
 	public void paint(Graphics g) {
-		g.drawImage(background, 0, 0, null);
+		g.drawImage(backgroundImage, 0, 0, null);
+		g.drawImage(playerImage, player.x, player.y, null);
 		for(int i =0; i<ant.size(); i++) {
-			g.drawImage(ant.get(i).getPhoto(),ant.get(i).x,ant.get(i).y,null);
+			g.drawImage(antImage,ant.get(i).x,ant.get(i).y,null);
 		}
 
 
@@ -71,7 +70,6 @@ public class Game extends JPanel{
 				switch(state) {
 					case START:
 						state = RUNNING;
-						System.out.println("游戏开始");
 						break;
 					case RUNNING:
 						break;
@@ -82,8 +80,7 @@ public class Game extends JPanel{
 				if(state == RUNNING) {
 					int x = e.getX();
 					int y = e.getY();
-					Player.moving(x,y);
-					System.out.println("x"+x+"  "+"y"+y);
+					player.moving(x,y);
 				}
 			}
 			@Override

@@ -8,8 +8,8 @@ public class Ant extends Object_Fly{
 	
 	Ant(){		
 		photo = Game.antImage;
-		int width = photo.getWidth();
-		int height = photo.getHeight();
+		width = photo.getWidth();
+		height = photo.getHeight();
 		Random r = new Random();
 		x = r.nextInt(50);
 		y = r.nextInt(450);

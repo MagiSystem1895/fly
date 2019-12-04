@@ -17,41 +17,48 @@ import javax.swing.JPanel;
 public class Game extends JPanel{
 	
 	int flying_cnt = 0;//控制飞行物生成速度
+	int mybullet_cnt = 0;//控制蜜蜂的子弹射出速度
 	
 //-----------------------------------------------------------------------------------------------	
 //设置游戏状态
-	int state = 0;
+	int state = 1;
 	public final int START = 0;
 	public final int RUNNING = 1;
 	public final int PAUSE = 0;
 	public final int GAME_OVER = 0;
 	
 //-----------------------------------------------------------------------------------------
-//集合和Player对象
-	List<Object_Fly> ant = new ArrayList<>();//储存小虫子的ArrayList
-	Player player = new Player();
-//---------------------------------------------------------------------------------------------	
 //导入图片
 	static BufferedImage antImage;
 	static BufferedImage backgroundImage;
 	static BufferedImage playerImage;
+	static BufferedImage myBulletImage;
 
 	static {
 		try {
 			antImage = ImageIO.read(new File("./imgs/ant.png"));
 			backgroundImage = ImageIO.read(new File("./imgs/background.png"));
 			playerImage = ImageIO.read(new File("./imgs/player.png"));
+			myBulletImage = ImageIO.read(new File("./imgs/mybullet.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 //------------------------------------------------------------------------------------------------
+//集合和Player对象
+	List<Object_Fly> ant = new ArrayList<>();//储存小虫子的ArrayList
+	List<MyBullet> myBullets = new ArrayList<>();
+	Player player = new Player();
+//---------------------------------------------------------------------------------------------	
 //画图
 	public void paint(Graphics g) {
 		g.drawImage(backgroundImage, 0, 0, null);
 		g.drawImage(playerImage, player.x, player.y, null);
-		for(int i =0; i<ant.size(); i++) {
+		for(int i=0; i<ant.size(); i++) {//打印小虫子
 			g.drawImage(antImage,ant.get(i).x,ant.get(i).y,null);
+		}
+		for(int i=0; i<myBullets.size(); i++) {//打印自己的子弹
+			g.drawImage(myBulletImage,myBullets.get(i).x,myBullets.get(i).y,null);
 		}
 
 
@@ -65,7 +72,6 @@ public class Game extends JPanel{
 		//4.创建Timer对象
 		//5.调用Timer的schedule方法
 		MouseAdapter mouseAdapter = new MouseAdapter() {
-			//点击才会开始
 			public void mouseClicked(MouseEvent e) {
 				switch(state) {
 					case START:
@@ -83,16 +89,16 @@ public class Game extends JPanel{
 					player.moving(x,y);
 				}
 			}
-			@Override
-			public void mouseExited(MouseEvent e) {
+
+/*			public void mouseExited(MouseEvent e) {
 				if(state != START) {
 					System.out.println("游戏暂停");
 					state = PAUSE;
 				}
-			}
-			@Override
+			}*/
+
 			public void mouseEntered(MouseEvent e) {
-				state = START;
+				state = RUNNING;
 			}
 		};
 		this.addMouseListener(mouseAdapter);
@@ -109,6 +115,7 @@ public class Game extends JPanel{
 				//6.检查结束
 				enterAction();
 				stepAction();
+				shootAction();
 				repaint();
 			}
 		};
@@ -130,11 +137,40 @@ public class Game extends JPanel{
 	}
 	//飞行物添加方法到此结束
 	private void stepAction() {
-		for(int i=0; i<ant.size(); i++) {
-			Object_Fly fly = ant.get(i);
-			fly.move();
+		for(int i=0; i<ant.size(); i++) {//虫子移动
+//			Object_Fly fly = ant.get(i);
+//			fly.move();
+			ant.get(i).move();
+		}
+		for(int i=0; i<myBullets.size(); i++) {
+			myBullets.get(i).move();
 		}
 	}
-	
+	//飞行物移动方法到此结束
+	private void shootAction() {//玩家射击
+		mybullet_cnt++;
+		if(mybullet_cnt % 10 == 0) {
+			myBullets.add(new MyBullet(player.x+10,player.y-20));	
+		}
+	}
 }
 //Game类到此结束
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

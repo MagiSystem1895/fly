@@ -1,12 +1,23 @@
 package com.magi.fly;
 
+import java.awt.Button;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 
 public class Demo {
 	public static void main(String[] args) {
 		JFrame jFrame = new JFrame();
 		Game game = new Game();
+//		Button bt = new Button("开始");
+//		jFrame.add(bt);
 		jFrame.add(game);
+//		bt.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				game.play();
+//			}
+//		});
 		//三板斧
 		jFrame.setSize(400, 1000); // 设置大小
 		jFrame.setAlwaysOnTop(true); // 设置其总在最上

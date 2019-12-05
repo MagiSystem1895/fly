@@ -15,4 +15,10 @@ public class Player extends Object_Fly{
 		this.y = y - height/2;
 	}
 
+	public boolean shootByAnt(AntBullet antBullet) {
+		int x = antBullet.x;
+		int y = antBullet.y;
+		return x>this.x && x<this.x+this.width && y>this.y && y<this.y+this.height;
+	}
+
 }

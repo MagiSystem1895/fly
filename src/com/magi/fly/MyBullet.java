@@ -8,7 +8,7 @@ public class MyBullet extends Object_Fly{
 	}
 
 	public void move() {
-		this.y = y - 5;
+		this.y = y - 10;
 	}
 
 }

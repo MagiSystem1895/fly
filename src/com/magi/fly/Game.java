@@ -19,13 +19,12 @@ public class Game extends JPanel{
 	
 	int flying_cnt = 0;//控制飞行物生成速度
 	int mybullet_cnt = 0;//控制蜜蜂的子弹射出速度
+	int grades = 0;
 	
 //-----------------------------------------------------------------------------------------------	
 //设置游戏状态
 	int state = 1;
-	public final int START = 0;
 	public final int RUNNING = 1;
-	public final int PAUSE = 0;
 	public final int GAME_OVER = 0;
 	
 //-----------------------------------------------------------------------------------------
@@ -56,15 +55,16 @@ public class Game extends JPanel{
 //---------------------------------------------------------------------------------------------	
 //画图
 	public void paint(Graphics g) {
-		g.drawImage(backgroundImage, 0, 0, null);
-		g.drawImage(playerImage, player.x, player.y, null);
-		for(int i=0; i<ant.size(); i++) {//打印小虫子
+		g.drawImage(backgroundImage, 0, 0, null);//画背景图片，用于刷新上一次的内容
+		g.drawImage(playerImage, player.x, player.y, null);//画玩家
+		g.drawString("GRADES:" + grades, 10, 10);//画分数
+		for(int i=0; i<ant.size(); i++) {//画虫子
 			g.drawImage(antImage,ant.get(i).x,ant.get(i).y,null);
 		}
-		for(int i=0; i<myBullets.size(); i++) {//打印自己的子弹
+		for(int i=0; i<myBullets.size(); i++) {//画自己的子弹
 			g.drawImage(myBulletImage,myBullets.get(i).x,myBullets.get(i).y,null);
 		}
-		for(int i=0; i<antBullets.size(); i++) {//打印虫子的子弹
+		for(int i=0; i<antBullets.size(); i++) {//画虫子的子弹
 			g.drawImage(antBulletImage,antBullets.get(i).x,antBullets.get(i).y,null);
 		}
 
@@ -80,13 +80,7 @@ public class Game extends JPanel{
 		//5.调用Timer的schedule方法
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				switch(state) {
-					case START:
-						state = RUNNING;
-						break;
-					case RUNNING:
-						break;
-				}
+				
 			}
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -97,16 +91,16 @@ public class Game extends JPanel{
 				}
 			}
 
-/*			public void mouseExited(MouseEvent e) {
-				if(state != START) {
-					System.out.println("游戏暂停");
-					state = PAUSE;
-				}
-			}*/
-
-			public void mouseEntered(MouseEvent e) {
-				state = RUNNING;
-			}
+//			public void mouseExited(MouseEvent e) {
+//				if(state != START) {
+//					System.out.println("游戏暂停");
+//					state = PAUSE;
+//				}
+//			}
+//
+//			public void mouseEntered(MouseEvent e) {
+//				state = RUNNING;
+//			}
 		};
 		this.addMouseListener(mouseAdapter);
 		this.addMouseMotionListener(mouseAdapter);
@@ -184,25 +178,30 @@ public class Game extends JPanel{
     		bang(myBullet);
     		
     	}
+    	for(int i=0; i<antBullets.size(); i++) {
+    		AntBullet antBullet = antBullets.get(i);
+    		bang2(antBullet);
+    		
+    	}
     }
- //遍历子弹方法结束
-
+//遍历子弹方法结束
     public void bang(MyBullet myBullet) {
-    	int flag = -1;
     	for(int i=0; i<ant.size(); i++) {
-    		if(ant.get(i).shootBy(myBullet)) {
-    			flag = i;
-    			myBullets.remove(myBullets);
+    		if(ant.get(i).shootBy(myBullet)) {//击中了
+    			myBullets.remove(myBullet);
+    			ant.remove(i);
+    			grades++;
     			break;
     		}
     	}
-    	
-    	if(flag != -1) {
-    		ant.remove(flag);
-    	}
     }
 //bang方法结束    
-    
+    private void bang2(AntBullet antBullet) {
+    	if(player.shootByAnt(antBullet)) {//击中了
+    		state = GAME_OVER;
+ 
+    	}
+    }   	
 
 }
 //Game类到此结束

@@ -1,6 +1,8 @@
 package com.magi.fly;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -23,9 +25,9 @@ public class Game extends JPanel{
 	
 //-----------------------------------------------------------------------------------------------	
 //设置游戏状态
-	int state = 1;
-	public final int RUNNING = 1;
-	public final int GAME_OVER = 0;
+//	int state = 1;
+//	public final int RUNNING = 1;
+//	public final int GAME_OVER = 0;
 	
 //-----------------------------------------------------------------------------------------
 //导入图片
@@ -77,18 +79,15 @@ public class Game extends JPanel{
 		//2.添加鼠标监听对象
 		//3.覆写TimerTask
 		//4.创建Timer对象
-		//5.调用Timer的schedule方法
+		//5.调用Timer的schedule方法	
 		MouseAdapter mouseAdapter = new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				
-			}
-			@Override
+
 			public void mouseMoved(MouseEvent e) {
-				if(state == RUNNING) {
-					int x = e.getX();
-					int y = e.getY();
-					player.moving(x,y);
-				}
+//				if(state == RUNNING) {
+//				}
+				int x = e.getX();
+				int y = e.getY();
+				player.moving(x,y);
 			}
 
 //			public void mouseExited(MouseEvent e) {
@@ -102,7 +101,7 @@ public class Game extends JPanel{
 //				state = RUNNING;
 //			}
 		};
-		this.addMouseListener(mouseAdapter);
+//		this.addMouseListener(mouseAdapter);
 		this.addMouseMotionListener(mouseAdapter);
 		
 		Timer timer = new Timer();
@@ -198,8 +197,7 @@ public class Game extends JPanel{
 //bang方法结束    
     private void bang2(AntBullet antBullet) {
     	if(player.shootByAnt(antBullet)) {//击中了
-    		state = GAME_OVER;
- 
+    		System.exit(0);
     	}
     }   	
 
